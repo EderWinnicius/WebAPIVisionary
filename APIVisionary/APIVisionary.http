@@ -1,0 +1,6 @@
+@APIVisionary_HostAddress = http://localhost:5038
+
+GET {{APIVisionary_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
