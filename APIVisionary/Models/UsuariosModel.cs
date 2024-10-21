@@ -12,6 +12,7 @@ namespace APIVisionary.Models
         public string SenhaUser { get; set; }
 
         [JsonIgnore]
+        public ICollection<PlaylistItem> PlaylistItems { get; set; }
         public ICollection<PlaylistVideos> PlaylistUser { get; set; }
         public ICollection<ConteudoModel> VideosPublicados { get; set; }
     }

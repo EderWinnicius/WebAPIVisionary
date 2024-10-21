@@ -1,4 +1,6 @@
-﻿namespace APIVisionary.Models
+﻿using System.Text.Json.Serialization;
+
+namespace APIVisionary.Models
 {
     public class ConteudoModel
     {
@@ -6,7 +8,10 @@
         public string TituloVideo { get; set; }
         public string DescricaoVideo { get; set; }
         public DateTime PostDate { get; set; } = DateTime.Now;
-        public string CategoriaVideo { get; set; }
+        public string VideoCategory { get; set; }
         public UsuariosModel Autor { get; set; }
+
+        [JsonIgnore]
+        public ICollection<PlaylistItem> PlaylistItems { get; set; }
     }
 }
