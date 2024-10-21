@@ -8,7 +8,6 @@ namespace APIVisionary.Models
         public string TituloVideo { get; set; }
         public string DescricaoVideo { get; set; }
         public DateTime PostDate { get; set; } = DateTime.Now;
-        public string VideoCategory { get; set; }
         public UsuariosModel Autor { get; set; }
 
         [JsonIgnore]

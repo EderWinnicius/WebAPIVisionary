@@ -1,8 +1,15 @@
-﻿namespace APIVisionary.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace APIVisionary.Models
 {
     public class PlaylistItem
     {
-        public ConteudoModel ConteudoId { get; set; }
-        public PlaylistVideos PlaylistId { get; set; }
+        public int Id { get; set; }
+
+        [ForeignKey("ConteudoId")]
+        public int ConteudoIdId { get; set; }
+
+        [ForeignKey("PlaylistId")]
+        public int PlaylistIdId { get; set; }
     }
 }

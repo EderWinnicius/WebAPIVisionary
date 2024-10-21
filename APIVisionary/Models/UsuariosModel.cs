@@ -9,10 +9,8 @@ namespace APIVisionary.Models
         public string EmailUser { get; set; }
         public DateTime NascDate { get; set; }
         public DateTime DataCriationAccount { get; set; } = DateTime.Now;
-        public string SenhaUser { get; set; }
 
         [JsonIgnore]
-        public ICollection<PlaylistItem> PlaylistItems { get; set; }
         public ICollection<PlaylistVideos> PlaylistUser { get; set; }
         public ICollection<ConteudoModel> VideosPublicados { get; set; }
     }
