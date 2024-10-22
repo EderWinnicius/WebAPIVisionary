@@ -35,6 +35,13 @@ namespace APIVisionary.Controllers
             return Ok(usuario);
         }
 
+        [HttpGet("BuscarUsuariosVideos/{TituloVideo}")]
+        public async Task<ActionResult<ResponseModel<UsuariosModel>>> BuscarUsuariosVideos(string TituloVideo)
+        {
+            var usuario = await _usuarioInterface.BuscarUsuariosVideos(TituloVideo);
+            return Ok(usuario);
+        }
+
 
 
     }

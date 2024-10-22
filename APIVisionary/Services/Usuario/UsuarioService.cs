@@ -61,9 +61,33 @@ namespace APIVisionary.Services.Usuario
             }
         }
 
-        public Task<ResponseModel<UsuariosModel>> BuscarUsuariosVideos(string TituloVideo)
+        public async Task<ResponseModel<UsuariosModel>> BuscarUsuariosVideos(string TituloVideo)
         {
-            throw new NotImplementedException();
+            ResponseModel<UsuariosModel> resposta = new ResponseModel<UsuariosModel>();
+
+            try
+            {
+                var Conteudo = await _context.ConteudoTableContent
+                    .Include(a => a.Autor)
+                    .FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.TituloVideo == TituloVideo);
+                if 
+                    
+                    (Conteudo == null)
+                {
+                    resposta.Mensagem = "Nenhum registro localizado";
+                    return resposta;
+                }
+                resposta.Dados = Conteudo.Autor;
+                resposta.Mensagem = "Usuário encontrado";
+
+                return resposta;
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
         }
 
         public async Task<ResponseModel<List<UsuariosModel>>> ListarUsuarios()
