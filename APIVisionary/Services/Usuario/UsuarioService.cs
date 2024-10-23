@@ -1,6 +1,8 @@
 ﻿using APIVisionary.Data;
+using APIVisionary.Dto.Usuario;
 using APIVisionary.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace APIVisionary.Services.Usuario
 {
@@ -103,6 +105,105 @@ namespace APIVisionary.Services.Usuario
                 resposta.Mensagem = "Todos os Usuários encontrados";
 
                 return resposta;
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<List<UsuariosModel>>> CriarUsuario(UsuarioCreateDto usuarioCreateDto)
+        {
+            ResponseModel<List<UsuariosModel>> resposta = new ResponseModel<List<UsuariosModel>>();
+
+                try
+            {
+                var usuario = new UsuariosModel()
+                {
+                    NameUser = usuarioCreateDto.NameUser,
+                    EmailUser = usuarioCreateDto.EmailUser,
+                    NascDate = usuarioCreateDto.NascDate,
+                };
+
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.UsuariosTableContent.ToListAsync();
+                resposta.Mensagem = "Usuário Criado Com sucesso";
+                return resposta;
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<List<UsuariosModel>>> EditarUsuario(EditarUsuarioDto editarUsuarioDto)
+        {
+            ResponseModel<List<UsuariosModel>> resposta = new ResponseModel<List<UsuariosModel>>();
+
+            try
+            {
+
+                var usuario = await _context.UsuariosTableContent.FirstOrDefaultAsync(usuarioBanco => usuarioBanco.Id == editarUsuarioDto.Id);
+                if (usuario == null)
+                {
+                    resposta.Mensagem = "Nenhum registro localizado";
+                    return resposta;
+                }
+
+                usuario.NameUser = editarUsuarioDto.NameUser;
+                usuario.EmailUser = editarUsuarioDto.EmailUser;
+                usuario.NascDate = editarUsuarioDto.NascDate;
+
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.UsuariosTableContent.ToListAsync();
+                resposta.Mensagem = "Usuario Editado com sucesso";
+                return resposta;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
+        }
+
+        public async Task<ResponseModel<List<UsuariosModel>>> ExcluirAutor(int IDUsuario)
+        {
+            ResponseModel<List<UsuariosModel>> resposta = new ResponseModel<List<UsuariosModel>>();
+            try
+            {
+                var usuario = await _context.UsuariosTableContent
+                    .FirstOrDefaultAsync(usuarioBanco => usuarioBanco.Id == IDUsuario);
+
+                if (usuario == null)
+                {
+                    resposta.Mensagem = "Nenhum registro localizado";
+                    return resposta;
+                }
+
+                _context.Remove(usuario);
+
+                resposta.Mensagem = $"Usuario {usuario.NameUser} Excluido Permanentemente";
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.UsuariosTableContent.ToListAsync();
+                return resposta;
+
+
 
             }
             catch (Exception ex)

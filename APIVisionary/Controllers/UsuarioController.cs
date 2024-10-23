@@ -1,6 +1,8 @@
-﻿using APIVisionary.Models;
+﻿using APIVisionary.Dto.Usuario;
+using APIVisionary.Models;
 using APIVisionary.Services.Usuario;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace APIVisionary.Controllers
 {
@@ -42,7 +44,26 @@ namespace APIVisionary.Controllers
             return Ok(usuario);
         }
 
+        [HttpPost("CriarNovoUsuario")]
+        public async Task<ActionResult<ResponseModel<List<UsuariosModel>>>> CriarNovoUsuario(UsuarioCreateDto usuarioCreateDto)
+        { 
+            var autores = await _usuarioInterface.CriarUsuario(usuarioCreateDto);
+            return Ok(autores);
+        }
 
+        [HttpPut("EditarUsuario")]
+        public async Task<ActionResult<ResponseModel<List<UsuariosModel>>>> EditarUsuario(EditarUsuarioDto editarUsuarioDto)
+        {
+            var autores = await _usuarioInterface.EditarUsuario(editarUsuarioDto);
+            return Ok(autores);
+        }
+
+        [HttpDelete("ExcluirAutor/{UsuarioID}")]
+        public async Task<ActionResult<ResponseModel<List<UsuariosModel>>>> ExcluirAutor(int UsuarioID)
+        {
+            var autores = await _usuarioInterface.ExcluirAutor(UsuarioID);
+            return Ok(autores);
+        }
 
     }
 }
