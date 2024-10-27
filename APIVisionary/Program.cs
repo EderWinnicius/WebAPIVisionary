@@ -1,4 +1,5 @@
 using APIVisionary.Data;
+using APIVisionary.Services.Conteudo;
 using APIVisionary.Services.Usuario;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -13,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<UsuarioInterface, UsuarioService>();
+
+builder.Services.AddScoped<ConteudoInterface, ConteudoService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

@@ -46,7 +46,7 @@ namespace APIVisionary.Controllers
 
         [HttpPost("CriarNovoUsuario")]
         public async Task<ActionResult<ResponseModel<List<UsuariosModel>>>> CriarNovoUsuario(UsuarioCreateDto usuarioCreateDto)
-        { 
+        {  
             var autores = await _usuarioInterface.CriarUsuario(usuarioCreateDto);
             return Ok(autores);
         }
