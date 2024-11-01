@@ -101,7 +101,7 @@ namespace APIVisionary.Services.Conteudo
                 var Usuario = await _context.UsuariosTableContent.FirstOrDefaultAsync(UsuarioBanco => UsuarioBanco.Id == conteudoCriacaoDto.Autor);
                 if (Usuario == null)
                 {
-                    resposta.Mensagem = "Nenhum registro localizado";
+                    resposta.Mensagem = "Nenhum Usuário localizado";
                     return resposta;
                 }
 

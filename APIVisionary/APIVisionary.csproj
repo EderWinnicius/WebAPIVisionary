@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\NovaPasta\" />
+    <Folder Include="Dto\Vinculo\" />
   </ItemGroup>
 
 </Project>
