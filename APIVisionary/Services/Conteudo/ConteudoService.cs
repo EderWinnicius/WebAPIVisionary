@@ -20,10 +20,10 @@ namespace APIVisionary.Services.Conteudo
 
             try
             {
-                var Conteudo = await _context.ConteudoTableContent.FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.Id == IDConteudo);
+                var Conteudo = await _context.ConteudoTableContent.Include(a => a.Autor).FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.Id == IDConteudo);
                 if (Conteudo == null)
                 {
-                    resposta.Mensagem = "Nenhum registro localizado";
+                    resposta.Mensagem = "Nenhum conteúdo localizado";
                     return resposta;
                 }
                 resposta.Dados = Conteudo;
@@ -44,7 +44,7 @@ namespace APIVisionary.Services.Conteudo
             ResponseModel<ConteudoModel> resposta = new ResponseModel<ConteudoModel>();
             try
             {
-                var Conteudo = await _context.ConteudoTableContent.FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.TituloVideo == Titulo);
+                var Conteudo = await _context.ConteudoTableContent.Include(a => a.Autor).FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.TituloVideo == Titulo);
                 if (Conteudo == null)
                 {
                     resposta.Mensagem = "Nenhum registro localizado";
@@ -105,22 +105,12 @@ namespace APIVisionary.Services.Conteudo
                     return resposta;
                 }
 
-                var playlist = await _context.PlaylistItemsTableContent.FirstOrDefaultAsync(p => p.PlaylistIdId == conteudoCriacaoDto.PlaylistId);
-                if (playlist == null)
-                {
-                    resposta.Mensagem = "Nenhuma playlist localizado";
-                    return resposta;
-                }
-
-
-
 
                 var conteudo = new ConteudoModel()
                 {
                     TituloVideo = conteudoCriacaoDto.TituloVideo,
                     DescricaoVideo = conteudoCriacaoDto.DescricaoVideo,
-                    Autor = Usuario,
-                    PlaylistItems = (ICollection<PlaylistItem>)playlist
+                    Autor = Usuario
 
                 };
 
@@ -144,7 +134,50 @@ namespace APIVisionary.Services.Conteudo
 
         public async Task<ResponseModel<List<ConteudoModel>>> EditarConteudo(EditarConteudoDto editarConteudoDto)
         {
-            throw new NotImplementedException();
+            ResponseModel<List<ConteudoModel>> resposta = new ResponseModel<List<ConteudoModel>>();
+
+            try
+            {
+
+                var Conteudo = await _context.ConteudoTableContent.Include(a => a.Autor)
+                    .FirstOrDefaultAsync(ConteudoBanco =>ConteudoBanco.Id == editarConteudoDto.Id);
+
+                var Autor = await _context.UsuariosTableContent
+                    .FirstOrDefaultAsync(AutorBanco => AutorBanco.Id == editarConteudoDto.Autor);
+
+                if (Conteudo == null)
+                {
+                    resposta.Mensagem = "Nenhum conteudo localizado";
+                    return resposta;
+                }
+
+                if (Autor == null)
+                {
+                    resposta.Mensagem = "Nenhum autor localizado";
+                    return resposta;
+                }
+
+
+                Conteudo.TituloVideo = editarConteudoDto.TituloVideo;
+                Conteudo.DescricaoVideo = editarConteudoDto.DescricaoVideo;
+                Conteudo.Autor = Autor;
+
+                _context.Update(Conteudo);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.ConteudoTableContent.ToListAsync();
+                resposta.Mensagem = "Conteúdo Editado com sucesso";
+                return resposta;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
         }
 
         public async Task<ResponseModel<List<ConteudoModel>>> ExcluirConteudo(int IDConteudo)
@@ -187,7 +220,7 @@ namespace APIVisionary.Services.Conteudo
             try
             {
 
-                var Conteudo = await _context.ConteudoTableContent.ToListAsync();
+                var Conteudo = await _context.ConteudoTableContent.Include(a => a.Autor).ToListAsync();
 
                 resposta.Dados = Conteudo;
                 resposta.Mensagem = "Todos os Conteudos encontrados";

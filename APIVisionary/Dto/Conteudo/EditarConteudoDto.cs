@@ -7,6 +7,7 @@ namespace APIVisionary.Dto.Conteudo
         public int Id { get; set; }
         public string TituloVideo { get; set; }
         public string DescricaoVideo { get; set; }
-        public ICollection<PlaylistItem> PlaylistItems { get; set; }
+
+        public int Autor { get; set; }
     }
 }
