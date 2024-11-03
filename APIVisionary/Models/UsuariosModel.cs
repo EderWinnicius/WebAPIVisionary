@@ -12,6 +12,8 @@ namespace APIVisionary.Models
 
         [JsonIgnore]
         public ICollection<PlaylistVideos> PlaylistUser { get; set; }
+
+        [JsonPropertyName("Meus vídeos")]
         public ICollection<ConteudoModel> VideosPublicados { get; set; }
     }
 }

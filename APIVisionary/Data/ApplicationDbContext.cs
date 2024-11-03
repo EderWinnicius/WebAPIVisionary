@@ -13,5 +13,6 @@ namespace APIVisionary.Data
         public DbSet<ConteudoModel> ConteudoTableContent { get; set; }
         public DbSet<PlaylistItem> PlaylistItemsTableContent { get; set; }
         public DbSet<PlaylistVideos> PlaylisTableContent { get; set; }
+
     }
 }

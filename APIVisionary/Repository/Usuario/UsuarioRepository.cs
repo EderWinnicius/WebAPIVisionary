@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 namespace APIVisionary.Services.Usuario
 {
-    public class UsuarioService : UsuarioInterface
+    public class UsuarioRepository : UsuarioInterface
     {
         private readonly ApplicationDbContext _context;
-        public UsuarioService(ApplicationDbContext context)
+        public UsuarioRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -99,7 +99,7 @@ namespace APIVisionary.Services.Usuario
             try
             {
 
-                var Usuarios = await _context.UsuariosTableContent.ToListAsync();
+                var Usuarios = await _context.UsuariosTableContent.Include(c => c.VideosPublicados).ToListAsync();
 
                 resposta.Dados = Usuarios;
                 resposta.Mensagem = "Todos os Usuários encontrados";

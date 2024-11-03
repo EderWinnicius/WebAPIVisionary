@@ -1,15 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIVisionary.Models
 {
+    [PrimaryKey("ConteudoId", "PlaylistId")]
     public class PlaylistItem
     {
-        public int Id { get; set; }
 
         [ForeignKey("ConteudoId")]
-        public int ConteudoIdId { get; set; }
+        public int ConteudoId { get; set; }
 
         [ForeignKey("PlaylistId")]
-        public int PlaylistIdId { get; set; }
+        public int PlaylistId { get; set; }
     }
 }

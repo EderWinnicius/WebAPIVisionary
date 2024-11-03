@@ -1,6 +1,7 @@
 ﻿using APIVisionary.Dto.Conteudo;
 using APIVisionary.Dto.PlaylistVideos;
 using APIVisionary.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace APIVisionary.Services.Playlist
 {
@@ -20,6 +21,10 @@ namespace APIVisionary.Services.Playlist
         Task<ResponseModel<List<PlaylistVideos>>> EditarPlaylist(EditarPlaylistDto editarPlaylistDto);
 
         Task<ResponseModel<List<PlaylistVideos>>> ExcluirPlaylist(int IDPlaylist);
+
+        Task<ResponseModel<object>> AdicionarConteudo(AdicionarVideoPlaylistDto adicionarVideoPlaylistDto);
+
+        Task<ResponseModel<object>> ExcluirConteudo(AdicionarVideoPlaylistDto ExcluirVideoPlaylistDto);
 
 
     }

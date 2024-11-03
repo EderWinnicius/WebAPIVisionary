@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIVisionary.Services.Conteudo
 {
-    public class ConteudoService : ConteudoInterface
+    public class ConteudoRepository : ConteudoInterface
     {
         private readonly ApplicationDbContext _context;
-        public ConteudoService(ApplicationDbContext context)
+        public ConteudoRepository(ApplicationDbContext context)
         {
             _context = context;
         }

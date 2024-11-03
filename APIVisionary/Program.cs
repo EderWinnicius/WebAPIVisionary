@@ -14,11 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<UsuarioInterface, UsuarioService>();
+builder.Services.AddScoped<UsuarioInterface, UsuarioRepository>();
 
-builder.Services.AddScoped<ConteudoInterface, ConteudoService>();
+builder.Services.AddScoped<ConteudoInterface, ConteudoRepository>();
 
-builder.Services.AddScoped<PlaylistInterface, PlaylistService>();
+builder.Services.AddScoped<PlaylistInterface, PlaylistRepository>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

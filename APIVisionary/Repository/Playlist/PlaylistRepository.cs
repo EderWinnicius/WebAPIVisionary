@@ -6,12 +6,58 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIVisionary.Services.Playlist
 {
-    public class PlaylistService : PlaylistInterface
+    public class PlaylistRepository : PlaylistInterface
     {
         private readonly ApplicationDbContext _context;
-        public PlaylistService(ApplicationDbContext context)
+        public PlaylistRepository(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<ResponseModel<object>> AdicionarConteudo(AdicionarVideoPlaylistDto adicionarVideoPlaylistDto)
+        {
+            ResponseModel<object> resposta = new ResponseModel<object>();
+
+            try
+            {
+                var Conteudo = await _context.ConteudoTableContent.FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.Id == adicionarVideoPlaylistDto.ConteudoId);
+                if (Conteudo == null)
+                {
+                    resposta.Mensagem = "Nenhum conteudo localizado";
+                    return resposta;
+                }
+
+                var Playlist = await _context.PlaylisTableContent.FirstOrDefaultAsync(PlaylisBanco => PlaylisBanco.Id == adicionarVideoPlaylistDto.PlaylistId);
+                if (Conteudo == null)
+                {
+                    resposta.Mensagem = "Nenhuma playlist localizado";
+                    return resposta;
+                }
+
+
+                var playlistItem = new PlaylistItem()
+                {
+                    PlaylistId = adicionarVideoPlaylistDto.PlaylistId,
+                    ConteudoId = adicionarVideoPlaylistDto.ConteudoId
+                    
+
+                };
+
+                _context.Add(playlistItem);
+                await _context.SaveChangesAsync();
+
+
+
+                resposta.Mensagem = "Conteudo adicionado com sucesso";
+                return resposta;
+
+            }
+            catch (Exception ex)
+            {   
+                resposta.Mensagem = "Não foi possível adicionar conteúdo na playlist";
+                resposta.Status = false;
+                return resposta;
+            }
         }
 
         public async Task<ResponseModel<PlaylistVideos>> BuscarPlaylistID(int IDPlaylist)
@@ -174,6 +220,41 @@ namespace APIVisionary.Services.Playlist
             catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<object>> ExcluirConteudo(AdicionarVideoPlaylistDto ExcluirVideoPlaylistDto)
+        {
+            ResponseModel<object> resposta = new ResponseModel<object>();
+
+            try
+            {
+                var Conteudo = await _context.ConteudoTableContent.FirstOrDefaultAsync(ConteudoBanco => ConteudoBanco.Id == ExcluirVideoPlaylistDto.ConteudoId);
+                var Playlist = await _context.PlaylisTableContent.FirstOrDefaultAsync(PlaylisBanco => PlaylisBanco.Id == ExcluirVideoPlaylistDto.PlaylistId);
+                
+                
+                
+                if (Playlist == null || Conteudo == null)
+                {
+                    resposta.Mensagem = "Não localizado";
+                    return resposta;
+                }
+
+                var ConteudoExcluir = await _context.PlaylistItemsTableContent.FirstOrDefaultAsync(Objeto => Objeto.ConteudoId == ExcluirVideoPlaylistDto.ConteudoId);
+               
+
+                _context.Remove(ConteudoExcluir);
+
+                resposta.Mensagem = $"Conteúdo {Conteudo.TituloVideo} Excluido da {Playlist.PlaylistTittle}  Permanentemente";
+                await _context.SaveChangesAsync();
+                return resposta;
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = "Não foi possível excluir conteúdo na playlist";
                 resposta.Status = false;
                 return resposta;
             }
